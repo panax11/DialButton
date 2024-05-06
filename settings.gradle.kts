@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "DialButtton"
-include(":sample")
+include(":app")
 include(":dialbutton")

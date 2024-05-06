@@ -1,4 +1,4 @@
-package com.panax.dialbutton
+package com.panax.dialbuttton
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,7 +30,7 @@ import kotlin.random.Random
  * Sample screen
  */
 @Composable
-private fun SampleScreen(modifier: Modifier = Modifier) {
+fun SampleScreen(modifier: Modifier = Modifier) {
     val rowItems = listOf("A", "B", "C", "D", "E")
     val columnItems = listOf("1", "2", "3", "4", "5")
 
@@ -135,6 +135,6 @@ private fun SampleController(
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
-fun SamplePreview() {
+private fun SamplePreview() {
     SampleScreen(modifier = Modifier.fillMaxSize())
 }
