@@ -5,11 +5,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,9 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.panax.dialbutton.ui.ColumnDial
-import com.panax.dialbutton.ui.RowDial
-import kotlin.random.Random
+import com.panax.dialbutton.component.columnDialControl
+import com.panax.dialbutton.component.dialItem
+import com.panax.dialbutton.component.rowDialControl
+import com.panax.dialbutton.control.rememberDialController
+import com.panax.dialbutton.ui.dialLayout
 
 
 /**
@@ -31,6 +34,9 @@ import kotlin.random.Random
  */
 @Composable
 fun SampleScreen(modifier: Modifier = Modifier) {
+    val columnController = rememberDialController()
+    val rowController = rememberDialController()
+
     val rowItems = listOf("A", "B", "C", "D", "E")
     val columnItems = listOf("1", "2", "3", "4", "5")
 
@@ -44,61 +50,75 @@ fun SampleScreen(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        RowDial(
+        Row(
             modifier = Modifier
-                .height(100.dp),
-            itemSize = rowItems.size,
-            controlIndex = Random.nextInt(rowItems.size + 1),
-            controlContent = {
-                SampleController(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(50.dp),
-                    text = selectValueRow,
-                    onDragEnd = isDragEndRow
-                )
-            },
-            itemContent = {
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(color = Color.DarkGray)
+                .border(width = 2.dp, color = Color.Green)
+                .padding(2.dp)
+                .dialLayout(controller = rowController),
+        ) {
+            for (index in rowItems.indices) {
+                if (index == 1) {
+                    SampleController(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp)
+                            .rowDialControl(
+                                controller = rowController,
+                                onTargetSelect = { i, onDragEnd ->
+                                    selectValueRow = i?.let{ rowItems[it] } ?: ""
+                                    isDragEndRow = onDragEnd
+                                }
+                            ),
+                        text = selectValueRow,
+                        onDragEnd = isDragEndRow
+                    )
+                }
                 SampleItem(
                     modifier = Modifier
-                        .width(50.dp)
-                        .fillMaxHeight(),
-                    text = rowItems[it]
+                        .weight(1f)
+                        .height(50.dp)
+                        .dialItem(controller = rowController, index = index),
+                    text = rowItems[index]
                 )
-            },
-            onItemSelect = { index, idDragEnd ->
-                selectValueRow = index?.let{ rowItems[it] } ?: ""
-                isDragEndRow = idDragEnd
             }
-        )
-
-        ColumnDial(
+        }
+        Column(
             modifier = Modifier
-                .width(100.dp),
-            itemSize = columnItems.size,
-            controlIndex = Random.nextInt(columnItems.size + 1),
-            controlContent = {
-                SampleController(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    text = selectValueColumn,
-                    onDragEnd = isDragEndColumn
-                )
-            },
-            itemContent = {
+                .fillMaxWidth()
+                .background(color = Color.DarkGray)
+                .border(width = 2.dp, color = Color.Green)
+                .padding(2.dp)
+                .dialLayout(controller = columnController),
+        ) {
+            for (index in columnItems.indices) {
+                if (index == 1) {
+                    SampleController(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .columnDialControl(
+                                controller = columnController,
+                                onTargetSelect = { i, onDragEnd ->
+                                    selectValueColumn = i?.let{ columnItems[it] } ?: ""
+                                    isDragEndColumn = onDragEnd
+                                }
+                            ),
+                        text = selectValueColumn,
+                        onDragEnd = isDragEndColumn
+                    )
+                }
                 SampleItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp),
-                    text = columnItems[it]
+                        .height(50.dp)
+                        .dialItem(controller = columnController, index = index),
+                    text = columnItems[index]
                 )
-            },
-            onItemSelect = { index, idDragEnd ->
-                selectValueColumn = index?.let{ columnItems[it] } ?: ""
-                isDragEndColumn = idDragEnd
             }
-        )
+        }
     }
 }
 
