@@ -3,6 +3,7 @@ package com.panax.dialbuttton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -154,11 +155,16 @@ private fun SamplePreview() {
 @Preview(showBackground = true, widthDp = 360)
 @Composable
 private fun RowSamplePreview() {
-    RowSample(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    )
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        RowSample(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        )
+    }
 }
 
 /**
@@ -167,9 +173,14 @@ private fun RowSamplePreview() {
 @Preview(showBackground = true, heightDp = 360)
 @Composable
 private fun ColumnSamplePreview() {
-    ColumnSample(
-        modifier = Modifier
-            .fillMaxHeight()
-            .wrapContentWidth()
-    )
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        ColumnSample(
+            modifier = Modifier
+                .fillMaxHeight(0.5f)
+                .wrapContentWidth()
+        )
+    }
 }
