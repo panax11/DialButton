@@ -3,15 +3,16 @@ package com.panax.dialbuttton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,127 +35,141 @@ import com.panax.dialbutton.ui.dialLayout
  */
 @Composable
 fun SampleScreen(modifier: Modifier = Modifier) {
-    val columnController = rememberDialController()
-    val rowController = rememberDialController()
-
-    val rowItems = listOf("A", "B", "C", "D", "E")
-    val columnItems = listOf("1", "2", "3", "4", "5")
-
-    var isDragEndRow: Boolean by remember { mutableStateOf(false) }
-    var isDragEndColumn: Boolean by remember { mutableStateOf(false) }
-    var selectValueRow: String by remember { mutableStateOf("") }
-    var selectValueColumn: String by remember { mutableStateOf("") }
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Row(
+        RowSample(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(color = Color.DarkGray)
-                .border(width = 2.dp, color = Color.Green)
-                .padding(2.dp)
-                .dialLayout(controller = rowController),
-        ) {
-            for (index in rowItems.indices) {
-                if (index == 1) {
-                    SampleController(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                            .rowDialControl(
-                                controller = rowController,
-                                onTargetSelect = { i, onDragEnd ->
-                                    selectValueRow = i?.let{ rowItems[it] } ?: ""
-                                    isDragEndRow = onDragEnd
-                                }
-                            ),
-                        text = selectValueRow,
-                        onDragEnd = isDragEndRow
-                    )
-                }
-                SampleItem(
+        )
+        ColumnSample(
+            modifier = Modifier
+                .weight(1f)
+                .wrapContentWidth()
+        )
+    }
+}
+
+/**
+ * Row dial sample
+ */
+@Composable
+private fun RowSample(modifier: Modifier) {
+    val controller = rememberDialController()
+
+    val items = listOf("A", "B", "C", "D", "E")
+
+    var isDragEnd: Boolean by remember { mutableStateOf(false) }
+    var selectValue: String by remember { mutableStateOf("") }
+
+    Row(
+        modifier = modifier.dialLayout(controller = controller),
+    ) {
+        for (index in items.indices) {
+            if (index == 1) {
+                SampleController(
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp)
-                        .dialItem(controller = rowController, index = index),
-                    text = rowItems[index]
+                        .rowDialControl(
+                            controller = controller,
+                            onTargetSelect = { i, onDragEnd ->
+                                selectValue = i?.let { items[it] } ?: ""
+                                isDragEnd = onDragEnd
+                            }
+                        ),
+                    text = selectValue,
+                    onDragEnd = isDragEnd
                 )
             }
+            SampleItem(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp)
+                    .dialItem(controller = controller, index = index),
+                text = items[index]
+            )
         }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.DarkGray)
-                .border(width = 2.dp, color = Color.Green)
-                .padding(2.dp)
-                .dialLayout(controller = columnController),
-        ) {
-            for (index in columnItems.indices) {
-                if (index == 1) {
-                    SampleController(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .columnDialControl(
-                                controller = columnController,
-                                onTargetSelect = { i, onDragEnd ->
-                                    selectValueColumn = i?.let{ columnItems[it] } ?: ""
-                                    isDragEndColumn = onDragEnd
-                                }
-                            ),
-                        text = selectValueColumn,
-                        onDragEnd = isDragEndColumn
-                    )
-                }
-                SampleItem(
+    }
+}
+
+/**
+ * Column dial sample
+ */
+@Composable
+private fun ColumnSample(modifier: Modifier) {
+    val controller = rememberDialController()
+
+    val items = listOf("1", "2", "3", "4", "5")
+
+    var isDragEnd: Boolean by remember { mutableStateOf(false) }
+    var selectValue: String by remember { mutableStateOf("") }
+
+    Column(
+        modifier = modifier.dialLayout(controller = controller),
+    ) {
+        for (index in items.indices) {
+            if (index == 1) {
+                SampleController(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .dialItem(controller = columnController, index = index),
-                    text = columnItems[index]
+                        .weight(1f)
+                        .width(50.dp)
+                        .columnDialControl(
+                            controller = controller,
+                            onTargetSelect = { i, onDragEnd ->
+                                selectValue = i?.let { items[it] } ?: ""
+                                isDragEnd = onDragEnd
+                            }
+                        ),
+                    text = selectValue,
+                    onDragEnd = isDragEnd
                 )
             }
+            SampleItem(
+                modifier = Modifier
+                    .weight(1f)
+                    .width(50.dp)
+                    .dialItem(controller = controller, index = index),
+                text = items[index]
+            )
         }
     }
 }
 
-@Composable
-private fun SampleItem(
-    modifier: Modifier = Modifier,
-    text: String
-) {
-    Box(
-        modifier = modifier
-            .background(color = Color.LightGray)
-            .border(width = 2.dp, color = Color.Gray),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(text = text, color = Color.Magenta)
-    }
-}
-
-@Composable
-private fun SampleController(
-    modifier: Modifier = Modifier,
-    text: String,
-    onDragEnd: Boolean
-) {
-    Box(
-        modifier = modifier
-            .background(color = Color.Black)
-            .border(width = 2.dp, color = Color.Blue),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(text = text, color = if (onDragEnd) Color.Cyan else Color.White)
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360, heightDp = 640)
+/**
+ * Sample screen preview
+ */
+@Preview(showBackground = true, widthDp = 360, heightDp = 360)
 @Composable
 private fun SamplePreview() {
     SampleScreen(modifier = Modifier.fillMaxSize())
+}
+
+/**
+ * Row dial sample preview
+ */
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+private fun RowSamplePreview() {
+    RowSample(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    )
+}
+
+/**
+ * Column dial sample preview
+ */
+@Preview(showBackground = true, heightDp = 360)
+@Composable
+private fun ColumnSamplePreview() {
+    ColumnSample(
+        modifier = Modifier
+            .fillMaxHeight()
+            .wrapContentWidth()
+    )
 }

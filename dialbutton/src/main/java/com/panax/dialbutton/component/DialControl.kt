@@ -13,34 +13,37 @@ import com.panax.dialbutton.control.DialController
 import com.panax.dialbutton.control.rememberDialState
 import kotlinx.coroutines.coroutineScope
 
+/**
+ * Column dial control modifier
+ */
 @Composable
 fun Modifier.columnDialControl(
     controller: DialController,
     onTargetSelect: (index: Int?, onDragEnd: Boolean) -> Unit,
 ): Modifier {
-    return this then Modifier
-        .dialControl(
-            controller = controller,
-            isHorizontal = false,
-            onTargetSelect = onTargetSelect
+    return this then Modifier.dialControl(
+            controller = controller, isHorizontal = false, onTargetSelect = onTargetSelect
         )
 }
 
-
+/**
+ * Row dial control modifier
+ */
 @Composable
 fun Modifier.rowDialControl(
     controller: DialController,
     onTargetSelect: (index: Int?, onDragEnd: Boolean) -> Unit,
 ): Modifier {
-    return this then Modifier
-        .dialControl(
-            controller = controller,
-            isHorizontal = true,
-            onTargetSelect = onTargetSelect
+    return this then Modifier.dialControl(
+            controller = controller, isHorizontal = true, onTargetSelect = onTargetSelect
         )
 }
 
-
+/**
+ * Base dial control modifier
+ *
+ * Manage the dial control drag gesture
+ */
 @Composable
 private fun Modifier.dialControl(
     controller: DialController,
@@ -52,12 +55,17 @@ private fun Modifier.dialControl(
 
     return this then Modifier
         .zIndex(1f)
-        .offset { IntOffset(dialState.value.toInt(), 0) }
+        .offset {
+            if (isHorizontal) {
+                IntOffset(dialState.value.toInt(), 0)
+            } else {
+                IntOffset(0, dialState.value.toInt())
+            }
+        }
         .onGloballyPositioned { controller.setControlPos(it.boundsInWindow()) }
         .pointerInput(Unit) {
             coroutineScope {
-                detectDragGestures(
-                    onDragStart = { controller.targetIndex = null },
+                detectDragGestures(onDragStart = { controller.targetIndex = null },
                     onDragCancel = { dialState.resetValue(this) },
                     onDragEnd = {
                         dialState.resetValue(this)
@@ -82,8 +90,7 @@ private fun Modifier.dialControl(
                         controller.targetIndex?.let {
                             onTargetSelect(it, false)
                         }
-                    }
-                )
+                    })
             }
         }
 }

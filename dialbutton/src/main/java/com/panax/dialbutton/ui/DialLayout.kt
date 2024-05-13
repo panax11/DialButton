@@ -28,7 +28,11 @@ import com.panax.dialbutton.component.rowDialControl
 import com.panax.dialbutton.control.DialController
 import com.panax.dialbutton.control.rememberDialController
 
-
+/**
+ * Dial layout modifier
+ *
+ * save control move area
+ */
 @Composable
 fun Modifier.dialLayout(
     controller: DialController,
@@ -37,6 +41,9 @@ fun Modifier.dialLayout(
         .onGloballyPositioned { controller.setLimitArea(it.boundsInWindow()) }
 }
 
+/**
+ * Column dial preview
+ */
 @Preview(widthDp = 300, heightDp = 300)
 @Composable
 private fun ColumnDialPreview() {
@@ -86,7 +93,9 @@ private fun ColumnDialPreview() {
     }
 }
 
-
+/**
+ * Row dial preview
+ */
 @Preview
 @Composable
 private fun RowDialPreview() {

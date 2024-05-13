@@ -9,6 +9,11 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import com.panax.dialbutton.control.DialController
 
+/**
+ * Dial item modifier
+ *
+ * Save the bounds of the item in the window
+ */
 @Composable
 fun Modifier.dialItem(
     controller: DialController,
