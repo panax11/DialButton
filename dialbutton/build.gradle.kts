@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    `maven-publish`
 }
 
 android {
@@ -12,6 +13,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        aarMetadata {
+            minCompileSdk = 24
+        }
     }
 
     buildTypes {
@@ -52,4 +57,24 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     debugImplementation(libs.androidx.ui.tooling)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "com.panax"
+            artifactId = "dialbutton"
+            version = "1.0"
+
+            pom {
+                name = "DialButton"
+                description = "Android compose dial button library"
+                developers{
+                    developer {
+                        name = "panax"
+                    }
+                }
+            }
+        }
+    }
 }
