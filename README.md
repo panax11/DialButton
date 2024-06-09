@@ -13,6 +13,8 @@ UI for selecting targets by dragging like dialing a phone number
 [![](https://jitpack.io/v/panax11/DialButton.svg)](https://jitpack.io/#panax11/DialButton)
 
 ### gradle
+
+[settings.gradle.kts](https://github.com/panax11/DialButton/blob/main/settings.gradle.kts)
 ```gradle
 dependencyResolutionManagement {
 		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -22,6 +24,7 @@ dependencyResolutionManagement {
 		}
 	}
 ```
+[build.gradle.kts](https://github.com/panax11/DialButton/blob/main/app/build.gradle.kts)
 ```gradle
 dependencies {
 	        implementation 'com.github.panax11:DialButton:1.0'
