@@ -66,6 +66,10 @@ publishing {
             artifactId = "dialbutton"
             version = "1.0"
 
+            afterEvaluate {
+                from(components["release"])
+            }
+            
             pom {
                 name = "DialButton"
                 description = "Android compose dial button library"
