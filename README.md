@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center">      
 📞 Jetpack Compose dial button library<br>
 UI for selecting targets by dragging like dialing a phone number
 </p>
@@ -8,6 +8,25 @@ UI for selecting targets by dragging like dialing a phone number
 <img src="preview/row_dial.gif" width="270"/>
 <img src="preview/column_dial.gif" width="270"/>
 </p>
+
+## download
+[![](https://jitpack.io/v/panax11/DialButton.svg)](https://jitpack.io/#panax11/DialButton)
+
+### gradle
+```gradle
+dependencyResolutionManagement {
+		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+		repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+```gradle
+dependencies {
+	        implementation 'com.github.panax11:DialButton:1.0'
+	}
+```
 
 ## Usage
 
